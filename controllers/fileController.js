@@ -10,10 +10,22 @@ const read_file_names = async (req, res) => {
         if (err) {
             return console.log('Unable to scan directory: ' + err);
         } 
-        //listing all files using forEach
-        files.forEach(function (file) {
+
+        files.forEach(function (filename) {
             // Do whatever you want to do with the file
-            console.log(file); 
+            //var rawFile = fs.readFileSync(directoryPath + '/' + filename);
+            //console.log("DAS", rawFile);
+            //const twoDimArr= rawFile.map(obj => Object.values(obj));
+            //console.log("JIJDJ:: ", twoDimArr['']);
+            //console.log(`File: ${rawFile.data[0].acc.ArrayAcc[0].x}`);
+            fs.readFile(directoryPath + '/' + filename, 'utf8' , (err, data) => {
+                if (err) {
+                  console.error(err);
+                  return
+                }
+                console.log(data);
+            });
+            //console.log(filename); 
         });
     });    
 };  
