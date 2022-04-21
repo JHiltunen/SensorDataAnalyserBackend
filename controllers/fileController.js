@@ -8,8 +8,14 @@ const read_month_data = async (req, res) => {
     res.json(await fileModel.readMonthData());
 };
 
-const read_file = async (req, res) => {
-  res.json(await fileModel.readFile("20220411T112412Z_174430000206_acc_stream.json"))
+const read_file = async (req, res, next) => {
+  try {
+   // res.json(await fileModel.readFile("HHUJSFK"));
+    res.json(await fileModel.readFile("20220411T112412Z_174430000206_acc_stream.json"));
+  } catch (error) {
+    next(error);
+  }
+  
 };
 
 module.exports = {
