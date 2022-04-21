@@ -12,20 +12,18 @@ const read_file_names = async (req, res) => {
         } 
 
         files.forEach(function (filename) {
-            // Do whatever you want to do with the file
-            //var rawFile = fs.readFileSync(directoryPath + '/' + filename);
-            //console.log("DAS", rawFile);
-            //const twoDimArr= rawFile.map(obj => Object.values(obj));
-            //console.log("JIJDJ:: ", twoDimArr['']);
-            //console.log(`File: ${rawFile.data[0].acc.ArrayAcc[0].x}`);
             fs.readFile(directoryPath + '/' + filename, 'utf8' , (err, data) => {
+                // remove extra ":" from Movesense json 
+                data = data.replace("data:", "data");
+                
                 if (err) {
                   console.error(err);
                   return
                 }
-                console.log(data);
+                console.log("DATAAAAAAAAA: ", data);
+                var obj2 = JSON.parse(data);
+                console.log("jkslh", obj2.data.pop());
             });
-            //console.log(filename); 
         });
     });    
 };  
