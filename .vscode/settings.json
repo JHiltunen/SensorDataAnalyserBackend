@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/f56e571d-eb50-45bf-8209-ca6415ffe383/resourceGroups/SensorDataAnalyserBackend/providers/Microsoft.Web/sites/SensorDataAnalyserBackend",
+    "appService.deploySubpath": "."
+}
