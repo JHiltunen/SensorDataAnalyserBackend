@@ -1,11 +1,11 @@
 const path = require('path');
 const fs = require('fs');
 
+let directoryPath = path.join('./', 'uploads')
+
 const readFilesInDirectory = (file) => {
   return new Promise((resolve, reject) => {
     const filenameArray = [];
-    //joining path of directory
-    const directoryPath = path.join('./', 'uploads');
     //passsing directoryPath and callback function
     fs.readdir(directoryPath, function (err, files) {
       //handling error
@@ -28,7 +28,6 @@ const readFilesInDirectory = (file) => {
 //TODO funktio joka lukee sen tiedoston, jonka nimi tulee funktioon parametrina
 const readFile = (filename) => {
   return new Promise((resolve, reject) => {
-    const directoryPath = path.join('./', 'uploads');
     fs.readFile(directoryPath + '/' + filename, 'utf8', (err, data) => {
       // remove extra ":" from Movesense json
       data = data.replace('data:', 'data');
