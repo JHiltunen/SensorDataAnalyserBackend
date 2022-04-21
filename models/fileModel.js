@@ -19,7 +19,7 @@ const readFilesInDirectory = (file) => {
       9: [],
       10: [],
       11: [],
-      12: [],
+      12: []
     };
     const months = [];
     //passsing directoryPath and callback function
@@ -61,16 +61,16 @@ const readFilesInDirectory = (file) => {
           return a - b;
         });
 
+        console.log("Month array after sort: ", months);
+
         months.forEach(month2 => {
           if (month == month2) {
-            filesWithMonths.month = filesWithMonths[month].push(filename);
+            filesWithMonths[month].push(filename);
           }
-          console.log(month2);
         });
         console.log("Files with months: ", filesWithMonths);
-        console.log("Month array after sort: ", months);
       });
-      resolve(filenameArray);
+      resolve(filesWithMonths);
     });
   });
 };
