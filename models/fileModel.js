@@ -6,6 +6,22 @@ let directoryPath = path.join('./', 'uploads')
 const readFilesInDirectory = (file) => {
   return new Promise((resolve, reject) => {
     const filenameArray = [];
+
+    const filesWithMonths = {
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+      6: [],
+      7: [],
+      8: [],
+      9: [],
+      10: [],
+      11: [],
+      12: [],
+    };
+    const months = [];
     //passsing directoryPath and callback function
     fs.readdir(directoryPath, function (err, files) {
       //handling error
@@ -18,9 +34,9 @@ const readFilesInDirectory = (file) => {
         console.log("Date: ", dateString);
         const year = Number(dateString.slice(0, 4));
         console.log("Year: ", year);
-        const date = Number(dateString.slice(4, 6));
+        const date = Number(dateString.slice(6, 8));
         console.log("Date: ", date);
-        const month = Number(dateString.slice(6, 8));
+        const month = Number(dateString.slice(4, 6));
         console.log("Month: ", month);
 
         const hours = Number(filename.slice(9, 11));
@@ -35,8 +51,25 @@ const readFilesInDirectory = (file) => {
         
         // use below to get local date and time format
         //console.log("Locale string", dateObject.toLocaleString('fi'));
-        
+
         filenameArray.push(filename);
+        if (!months.includes(month)) {
+          months.push(month);
+        }
+        console.log("Month array: ", months);
+        months.sort(function(a, b) {
+          return a - b;
+        });
+
+        months.forEach(month2 => {
+          if (month == month2) {
+            filesWithMonths.month = filesWithMonths[month].push(filename);
+          }
+          filesWithMonths.month
+          console.log(month2);
+        });
+        console.log("Files with months: ", filesWithMonths);
+        console.log("Month array after sort: ", months);
       });
       resolve(filenameArray);
     });
