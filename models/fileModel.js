@@ -3,7 +3,7 @@ const fs = require('fs');
 
 let directoryPath = path.join('./', 'uploads')
 
-const readFilesInDirectory = (file) => {
+const readFilesInDirectory = () => {
   return new Promise((resolve, reject) => {
     const filenameArray = [];
 
@@ -110,8 +110,38 @@ const readFile = (filename) => {
 
 //TODO HUOM! X-CODESSA raja-arvot ja värit (punainen kun poikkeama suuri, ja vihreä kun poikeeama pieni)!!!
 
-const readMonthData = () => {
-  return new Promise((resolve, reject) => {});
+const readMonthData = async (month = 0) => {
+  // read all files from directory
+  // month number is the key and key value is array of file names
+  const monthsWithFiles = await readFilesInDirectory();
+  console.log("MonthData ", monthsWithFiles);
+
+  // access specific month with
+  // monthsWithFiles[n] where n is number of the month 
+  console.log("Prints April (Huhtikuu)", monthsWithFiles[4]);
+
+  if (month == 0) {
+    // loop trough all months and load corresponding files with readFile(filename) function
+    console.log("Loop all files");
+    for (const monthKey in monthsWithFiles) {
+      const monthValue = monthsWithFiles[monthKey];
+      console.log("MonthKey: " + monthKey + " VALUE: " + monthValue);
+
+      if (monthValue.length > 0) {
+        for (let i = 0; i < monthValue.length; i++) {
+          // load each file
+          const fileData = await readFile(monthValue[i]);
+          console.log("Month value: ", fileData);
+          // access filedata
+          console.log("DATA: ", fileData.data)
+        }
+      }
+    }
+  } else {
+    // get only specific month data and loadfile with 
+    console.log("Month : " + month + " -> ", monthsWithFiles[month]);
+  }
+  
 };
 
 module.exports = {
