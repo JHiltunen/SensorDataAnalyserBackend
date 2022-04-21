@@ -33,6 +33,13 @@ const readFilesInDirectory = (file) => {
     });
 };
 
+const readMonthData = () => {
+    return new Promise((resolve, reject)=>{
+        
+    });
+};
+
 module.exports = {
     readFilesInDirectory,
+    readMonthData,
 };
