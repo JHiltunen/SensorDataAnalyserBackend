@@ -65,7 +65,6 @@ const readFilesInDirectory = (file) => {
           if (month == month2) {
             filesWithMonths.month = filesWithMonths[month].push(filename);
           }
-          filesWithMonths.month
           console.log(month2);
         });
         console.log("Files with months: ", filesWithMonths);
