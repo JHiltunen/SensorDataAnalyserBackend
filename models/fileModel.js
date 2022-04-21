@@ -76,14 +76,6 @@ const readFilesInDirectory = (file) => {
   });
 };
 
-function convertFromStringToDate(responseDate) {
-  let dateComponents = responseDate.split('T');
-  let datePieces = dateComponents[0].split("-");
-  let timePieces = dateComponents[1].split(":");
-  return(new Date(datePieces[2], (datePieces[1] - 1), datePieces[0],
-                       timePieces[0], timePieces[1], timePieces[2]))
-}
-
 //TODO Ei nyt mulla katos se ajatus päästä!!! --> Vittu voi voi!!!
 
 //TODO funktio joka käy läpi kaikki tiedostot uploads-kansiosta ja palauttaa tiedoston nimet
