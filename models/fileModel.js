@@ -50,18 +50,6 @@ const readFile = (filename) => {
   });
 };
 
-const fileExists = (filename) => {
-  fs.access('file.txt', (err) => {
-    if (err) {
-        console.log("The file does not exist.");
-        return false;
-    } else {
-        console.log("The file exists.");
-        return true;
-    }
-  });
-}; 
-
 //TODO funktio joka laskee kuukauden keskiarvon (ja jos aikaa on niin kaikki kuukauden datan)
 
 //TODO HUOM! X-CODESSA raja-arvot ja värit (punainen kun poikkeama suuri, ja vihreä kun poikeeama pieni)!!!
