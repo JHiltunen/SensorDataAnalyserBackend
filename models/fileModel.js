@@ -15,18 +15,6 @@ const readFilesInDirectory = (file) => {
 
       files.forEach(function (filename) {
         filenameArray.push(filename);
-
-        fs.readFile(directoryPath + '/' + filename, 'utf8', (err, data) => {
-          // remove extra ":" from Movesense json
-          data = data.replace('data:', 'data');
-
-          if (err) {
-            console.error(err);
-            return err;
-          }
-
-          var obj = JSON.parse(data);
-        });
       });
       resolve(filenameArray);
     });
@@ -38,6 +26,21 @@ const readFilesInDirectory = (file) => {
 //TODO funktio joka käy läpi kaikki tiedostot uploads-kansiosta ja palauttaa tiedoston nimet
 
 //TODO funktio joka lukee sen tiedoston, jonka nimi tulee funktioon parametrina
+const readFile = (filename) => {
+  return new Promise((resolve, reject) => {
+    const directoryPath = path.join('./', 'uploads');
+    fs.readFile(directoryPath + '/' + filename, 'utf8', (err, data) => {
+      // remove extra ":" from Movesense json
+      data = data.replace('data:', 'data');
+
+      if (err) {
+        console.error(err);
+        reject(err);
+      }
+      resolve(JSON.parse(data));
+    });
+  });
+};
 
 //TODO funktio joka laskee kuukauden keskiarvon (ja jos aikaa on niin kaikki kuukauden datan)
 
@@ -50,4 +53,5 @@ const readMonthData = () => {
 module.exports = {
   readFilesInDirectory,
   readMonthData,
+  readFile,
 };

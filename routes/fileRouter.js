@@ -9,4 +9,7 @@ router.route('/')
 router.route('/monthData')
   .get(fileController.read_month_data); 
 
+router.route('/read')
+  .get(fileController.read_file);
+
 module.exports = router;
