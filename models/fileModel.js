@@ -14,12 +14,42 @@ const readFilesInDirectory = (file) => {
       }
 
       files.forEach(function (filename) {
+        const dateString = filename.slice(0, 8);
+        console.log("Date: ", dateString);
+        const year = Number(dateString.slice(0, 4));
+        console.log("Year: ", year);
+        const date = Number(dateString.slice(4, 6));
+        console.log("Date: ", date);
+        const month = Number(dateString.slice(6, 8));
+        console.log("Month: ", month);
+
+        const hours = Number(filename.slice(9, 11));
+        console.log("hours: ", hours);
+        const minutes = Number(filename.slice(11, 13));
+        console.log("minutes: ", minutes);
+        const seconds = Number(filename.slice(13, 15));
+        console.log("seconds: ", seconds);
+
+        // YYYY-MM-DD hh:mm:ss
+        const dateObject = new Date(year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds);
+        
+        // use below to get local date and time format
+        //console.log("Locale string", dateObject.toLocaleString('fi'));
+        
         filenameArray.push(filename);
       });
       resolve(filenameArray);
     });
   });
 };
+
+function convertFromStringToDate(responseDate) {
+  let dateComponents = responseDate.split('T');
+  let datePieces = dateComponents[0].split("-");
+  let timePieces = dateComponents[1].split(":");
+  return(new Date(datePieces[2], (datePieces[1] - 1), datePieces[0],
+                       timePieces[0], timePieces[1], timePieces[2]))
+}
 
 //TODO Ei nyt mulla katos se ajatus päästä!!! --> Vittu voi voi!!!
 
