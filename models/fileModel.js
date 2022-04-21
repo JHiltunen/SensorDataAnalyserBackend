@@ -29,12 +29,14 @@ const readFilesInDirectory = (file) => {
 // file has to be in /uploads folder
 const readFile = (filename) => {
   return new Promise((resolve, reject) => {
+      // check if file exists
       fs.access(directoryPath + '/' + filename, (err) => {
         if (err) {
           console.log("File doesn't exist");
           reject("File doesn't exist");
         } else {
           console.log("File exists")
+          // read file
           fs.readFile(directoryPath + '/' + filename, 'utf8', (err, data) => {
             // remove extra ":" from Movesense json
             data = data.replace('data:', 'data');
