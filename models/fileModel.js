@@ -3,7 +3,7 @@ const fs = require('fs');
 
 let directoryPath = path.join('./', 'uploads');
 
-const readFilesInDirectory = () => {
+const mapFilenamesToMonths = () => {
   return new Promise((resolve, reject) => {
     const filenameArray = [];
 
@@ -87,6 +87,39 @@ const readFilesInDirectory = () => {
   });
 };
 
+const readFilesInDirectoryAndDoMath = async () => {
+  return new Promise((resolve, reject) => {
+    //passsing directoryPath and callback function
+    var sum = 0.0;
+    fs.readdir(directoryPath, async function (err, files) {
+      //handling error
+      if (err) {
+        reject(err);
+      }
+
+      var averageCounter = new Promise((resolve, reject) => {
+        files.forEach(async (filename) => {
+          oneAverage = await readFileAndDoSomeMath(filename);
+          sum += oneAverage;
+          console.log('SUMmum: ', sum);
+          var internalAverage = sum / files.length;
+          console.log('KESKIARVOTTELUA FOREACH: ', internalAverage);
+          if (files.indexOf(filename) === files.length - 1) resolve();
+        });
+      });
+
+      averageCounter.then(() => {
+        console.log('All done!');
+        console.log('The SUMmum: ', sum);
+        console.log('SUMMMMMMMMAAA: ', sum);
+        var average = sum / files.length;
+        console.log('KESKIARVOTTELUA: ', average);
+        resolve(average);
+      });
+    });
+  });
+};
+
 //TODO Ei nyt mulla katos se ajatus päästä!!! --> Vittu voi voi!!!
 
 //TODO funktio joka käy läpi kaikki tiedostot uploads-kansiosta ja palauttaa tiedoston nimet
@@ -111,22 +144,7 @@ const readFile = (filename) => {
             console.error(err);
             return err;
           }
-          /*
-          const schlumpf = JSON.parse(data);
-          console.log('SCHLUMPF: ', schlumpf.data.length);
-          var sum = 0.0;
-          schlumpf.data.forEach((floff) => {
-            let x = floff.acc.ArrayAcc[0].x;
-            let y = floff.acc.ArrayAcc[0].y;
-            let z = floff.acc.ArrayAcc[0].z;
-            let sqrtXZ = Math.sqrt(x * x + z * z);
-            let accXYZ = Math.sqrt(y * y + sqrtXZ);
-            sum += accXYZ;
-          });
 
-          let average = sum / schlumpf.data.length;
-          console.log(average);
-          */
           resolve(JSON.parse(data));
         });
       }
@@ -142,7 +160,7 @@ const readFileAndDoSomeMath = (filename) => {
         console.log("File doesn't exist");
         reject("File doesn't exist");
       } else {
-        console.log('File exists');
+        //console.log('File exists');
         // read file
         fs.readFile(directoryPath + '/' + filename, 'utf8', (err, data) => {
           // remove extra ":" from Movesense json
@@ -154,7 +172,7 @@ const readFileAndDoSomeMath = (filename) => {
           }
 
           const schlumpf = JSON.parse(data);
-          console.log('SCHLUMPF: ', schlumpf.data.length);
+          //console.log('SCHLUMPF: ', schlumpf.data.length);
           var sum = 0.0;
           schlumpf.data.forEach((floff) => {
             let x = floff.acc.ArrayAcc[0].x;
@@ -166,8 +184,11 @@ const readFileAndDoSomeMath = (filename) => {
           });
 
           let average = sum / schlumpf.data.length;
-          console.log(average);
-          resolve(JSON.parse(data));
+          //console.log('AVERAGE: ', average);
+          //console.log('AVERAGEJSON?: ', JSON.parse(average));
+          //resolve(JSON.parse(average));
+          //console.log(typeof average);
+          resolve(average);
         });
       }
     });
@@ -213,8 +234,9 @@ const readMonthData = async (month = 0) => {
 };
 
 module.exports = {
-  readFilesInDirectory,
+  mapFilenamesToMonths,
   readMonthData,
   readFile,
   readFileAndDoSomeMath,
+  readFilesInDirectoryAndDoMath,
 };

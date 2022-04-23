@@ -1,7 +1,11 @@
 const fileModel = require('../models/fileModel');
 
-const read_file_names = async (req, res) => {
-  res.json(await fileModel.readFilesInDirectory());
+const map_file_names_to_months = async (req, res) => {
+  res.json(await fileModel.mapFilenamesToMonths());
+};
+
+const read_file_in_directory_and_do_math = async (req, res) => {
+  res.json(await fileModel.readFilesInDirectoryAndDoMath());
 };
 
 const read_month_data = async (req, res) => {
@@ -33,8 +37,9 @@ const read_file_and_do_some_math = async (req, res, next) => {
 };
 
 module.exports = {
-  read_file_names,
+  map_file_names_to_months,
   read_month_data,
   read_file,
   read_file_and_do_some_math,
+  read_file_in_directory_and_do_math,
 };
