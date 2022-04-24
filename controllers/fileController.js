@@ -4,6 +4,10 @@ const map_file_names_to_months = async (req, res) => {
   res.json(await fileModel.mapFilenamesToMonths());
 };
 
+const get_most_recent_average = async (req, res) => {
+  res.json(await fileModel.getMostRecentAverage());
+};
+
 const read_file_in_directory_and_do_math = async (req, res) => {
   res.json(await fileModel.readFilesInDirectoryAndDoMath());
 };
@@ -47,4 +51,5 @@ module.exports = {
   read_file_and_do_some_math,
   read_file_in_directory_and_do_math,
   calculate_month_data,
+  get_most_recent_average,
 };

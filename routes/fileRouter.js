@@ -11,6 +11,8 @@ router.route('/monthDataMath').get(fileController.calculate_month_data);
 
 router.route('/read').get(fileController.read_file);
 
+router.route('/recent').get(fileController.get_most_recent_average);
+
 router.route('/schlumpf').get(fileController.read_file_and_do_some_math);
 
 router
