@@ -12,6 +12,10 @@ const read_month_data = async (req, res) => {
   res.json(await fileModel.readMonthData());
 };
 
+const calculate_month_data = async (req, res) => {
+  res.json(await fileModel.calculateMonthData());
+};
+
 const read_file = async (req, res, next) => {
   try {
     // res.json(await fileModel.readFile("HHUJSFK"));
@@ -42,4 +46,5 @@ module.exports = {
   read_file,
   read_file_and_do_some_math,
   read_file_in_directory_and_do_math,
+  calculate_month_data,
 };

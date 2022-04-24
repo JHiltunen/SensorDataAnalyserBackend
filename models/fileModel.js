@@ -87,6 +87,7 @@ const mapFilenamesToMonths = () => {
   });
 };
 
+// counts average of all files
 const readFilesInDirectoryAndDoMath = async () => {
   return new Promise((resolve, reject) => {
     //passsing directoryPath and callback function
@@ -144,7 +145,6 @@ const readFile = (filename) => {
             console.error(err);
             return err;
           }
-
           resolve(JSON.parse(data));
         });
       }
@@ -152,6 +152,7 @@ const readFile = (filename) => {
   });
 };
 
+//counts average of a file
 const readFileAndDoSomeMath = (filename) => {
   return new Promise((resolve, reject) => {
     // check if file exists
@@ -170,9 +171,8 @@ const readFileAndDoSomeMath = (filename) => {
             console.error(err);
             return err;
           }
-
+          // acceleration counter
           const schlumpf = JSON.parse(data);
-          //console.log('SCHLUMPF: ', schlumpf.data.length);
           var sum = 0.0;
           schlumpf.data.forEach((floff) => {
             let x = floff.acc.ArrayAcc[0].x;
@@ -182,12 +182,8 @@ const readFileAndDoSomeMath = (filename) => {
             let accXYZ = Math.sqrt(y * y + sqrtXZ);
             sum += accXYZ;
           });
-
           let average = sum / schlumpf.data.length;
-          //console.log('AVERAGE: ', average);
-          //console.log('AVERAGEJSON?: ', JSON.parse(average));
-          //resolve(JSON.parse(average));
-          //console.log(typeof average);
+
           resolve(average);
         });
       }
@@ -196,13 +192,12 @@ const readFileAndDoSomeMath = (filename) => {
 };
 
 //TODO funktio joka laskee kuukauden keskiarvon (ja jos aikaa on niin kaikki kuukauden datan)
-
 //TODO HUOM! X-CODESSA raja-arvot ja värit (punainen kun poikkeama suuri, ja vihreä kun poikeeama pieni)!!!
 
 const readMonthData = async (month = 0) => {
   // read all files from directory
   // month number is the key and key value is array of file names
-  const monthsWithFiles = await readFilesInDirectory();
+  const monthsWithFiles = await mapFilenamesToMonths();
   console.log('MonthData ', monthsWithFiles);
 
   // access specific month with
@@ -231,6 +226,63 @@ const readMonthData = async (month = 0) => {
     // get only specific month data and loadfile with
     console.log('Month : ' + month + ' -> ', monthsWithFiles[month]);
   }
+  return monthsWithFiles;
+};
+
+const calculateMonthData = async (month = 0) => {
+  const filesWithMonthsMath = {
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: [],
+    7: [],
+    8: [],
+    9: [],
+    10: [],
+    11: [],
+    12: [],
+  };
+  const filesWithMonthsMath2 = [];
+  // read all files from directory
+  // month number is the key and key value is array of file names
+  const monthsWithFiles = await mapFilenamesToMonths();
+  console.log('MonthData ', monthsWithFiles);
+
+  // access specific month with
+  // monthsWithFiles[n] where n is number of the month
+  console.log('Prints April (Huhtikuu)', monthsWithFiles[4]);
+
+  if (month == 0) {
+    // loop trough all months and load corresponding files with readFile(filename) function
+    console.log('Loop all files');
+    for (const monthKey in monthsWithFiles) {
+      const monthValue = monthsWithFiles[monthKey];
+      console.log('MonthKey: ' + monthKey + ' VALUE: ' + monthValue);
+      var sum = 0.0;
+      if (monthValue.length > 0) {
+        for (let i = 0; i < monthValue.length; i++) {
+          // load each file
+          const fileData = await readFileAndDoSomeMath(monthValue[i]);
+
+          sum += fileData;
+
+          //filesWithMonthsMath[monthKey].push(fileData);
+
+          console.log('Month value: math: ', sum);
+
+          // access filedata
+          console.log('DATA: ', fileData.data);
+        }
+        filesWithMonthsMath[monthKey].push(sum / monthValue.length);
+      }
+    }
+  } else {
+    // get only specific month data and loadfile with
+    //console.log('Month : ' + month + ' -> ', monthsWithFiles[month]);
+  }
+  return filesWithMonthsMath;
 };
 
 module.exports = {
@@ -239,4 +291,5 @@ module.exports = {
   readFile,
   readFileAndDoSomeMath,
   readFilesInDirectoryAndDoMath,
+  calculateMonthData,
 };
