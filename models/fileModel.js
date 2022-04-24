@@ -248,11 +248,9 @@ const calculateMonthData = async (month = 0) => {
   // read all files from directory
   // month number is the key and key value is array of file names
   const monthsWithFiles = await mapFilenamesToMonths();
-  console.log('MonthData ', monthsWithFiles);
 
   // access specific month with
   // monthsWithFiles[n] where n is number of the month
-  console.log('Prints April (Huhtikuu)', monthsWithFiles[4]);
 
   if (month == 0) {
     // loop trough all months and load corresponding files with readFile(filename) function
