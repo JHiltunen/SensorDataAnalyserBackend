@@ -104,14 +104,19 @@ const readFilesInDirectoryAndDoMath = async () => {
           sum += oneAverage;
           console.log('SUMmum: ', sum);
           var internalAverage = sum / files.length;
-          console.log('KESKIARVOTTELUA FOREACH: ', internalAverage);
-          if (files.indexOf(filename) === files.length - 1) resolve();
+          console.log(
+            'KESKIARVOTTELUA FOREACH: ',
+            internalAverage,
+            files.length,
+            files.indexOf(filename)
+          );
+          if (files.indexOf(filename) === files.length - 1) resolve(sum);
         });
       });
 
-      averageCounter.then(() => {
+      averageCounter.then((sum) => {
         console.log('All done!');
-        console.log('The SUMmum: ', sum);
+        //console.log('The SUMmum: ', sum);
         console.log('SUMMMMMMMMAAA: ', sum);
         var average = sum / files.length;
         console.log('KESKIARVOTTELUA: ', average);
@@ -274,6 +279,8 @@ const calculateMonthData = async (month = 0) => {
           console.log('DATA: ', fileData.data);
         }
         filesWithMonthsMath[monthKey].push(sum / monthValue.length);
+      } else {
+        filesWithMonthsMath[monthKey].push(0.0);
       }
     }
   } else {
