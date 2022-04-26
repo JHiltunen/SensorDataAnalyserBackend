@@ -5,7 +5,7 @@ const fileController = require('../controllers/fileController');
 router.route('/').get(fileController.map_file_names_to_months);
 
 // localhost:8080/files/monthData
-router.route('/monthData').get(fileController.read_month_data);
+//router.route('/monthData').get(fileController.read_month_data);
 
 router.route('/monthDataMath').get(fileController.calculate_month_data);
 

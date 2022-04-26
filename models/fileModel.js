@@ -29,6 +29,11 @@ const mapFilenamesToMonths = () => {
         reject(err);
       }
 
+      if (files.length < 1) {
+        reject('No files!');
+        //reject(filesWithMonths);
+      }
+
       files.forEach(function (filename) {
         const dateString = filename.slice(0, 8);
         console.log('Date: ', dateString);
@@ -96,6 +101,10 @@ const readFilesInDirectoryAndDoMath = async () => {
       //handling error
       if (err) {
         reject(err);
+      }
+
+      if (files.length < 1) {
+        reject('No files!');
       }
 
       var averageCounter = new Promise((resolve, reject) => {
@@ -196,6 +205,7 @@ const readFileAndDoSomeMath = (filename) => {
 //TODO funktio joka laskee kuukauden keskiarvon (ja jos aikaa on niin kaikki kuukauden datan)
 //TODO HUOM! X-CODESSA raja-arvot ja värit (punainen kun poikkeama suuri, ja vihreä kun poikeeama pieni)!!!
 
+/*
 const readMonthData = async (month = 0) => {
   // read all files from directory
   // month number is the key and key value is array of file names
@@ -229,6 +239,7 @@ const readMonthData = async (month = 0) => {
   }
   return monthsWithFiles;
 };
+*/
 
 const calculateMonthData = async (month = 0) => {
   const filesWithMonthsMath = {
@@ -248,10 +259,17 @@ const calculateMonthData = async (month = 0) => {
 
   // read all files from directory
   // month number is the key and key value is array of file names
+
   const monthsWithFiles = await mapFilenamesToMonths();
 
+  console.log('#€%: ', typeof monthsWithFiles);
   // access specific month with
   // monthsWithFiles[n] where n is number of the month
+
+  /*
+  if (typeof monthsWithFiles == string) {
+    return filesWithMonthsMath;
+  }*/
 
   if (month == 0) {
     // loop trough all months and load corresponding files with readFile(filename) function
@@ -310,6 +328,11 @@ const getMostRecentAverage = () => {
       if (err) {
         reject(err);
       }
+
+      if (files.length < 1) {
+        reject('No files!');
+      }
+
       var now = new Date();
       var recent = null;
       var recentFilename = '';
@@ -380,14 +403,16 @@ const getMostRecentAverage = () => {
         console.log('Files with months: ', filesWithMonths);
       });
       console.log('RECENT FILENAME: ', recentFilename);
-      resolve(readFileAndDoSomeMath(recentFilename));
+      if (!recentFilename == '') {
+        resolve(readFileAndDoSomeMath(recentFilename));
+      } else resolve(0);
     });
   });
 };
 
 module.exports = {
   mapFilenamesToMonths,
-  readMonthData,
+  //readMonthData,
   readFile,
   readFileAndDoSomeMath,
   readFilesInDirectoryAndDoMath,

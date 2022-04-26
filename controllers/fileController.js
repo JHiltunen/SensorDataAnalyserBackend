@@ -1,23 +1,41 @@
 const fileModel = require('../models/fileModel');
 
-const map_file_names_to_months = async (req, res) => {
-  res.json(await fileModel.mapFilenamesToMonths());
+const map_file_names_to_months = async (req, res, next) => {
+  try {
+    res.json(await fileModel.mapFilenamesToMonths());
+  } catch (error) {
+    next(error);
+  }
 };
 
-const get_most_recent_average = async (req, res) => {
-  res.json(await fileModel.getMostRecentAverage());
+const get_most_recent_average = async (req, res, next) => {
+  try {
+    res.json(await fileModel.getMostRecentAverage());
+  } catch (error) {
+    next(error);
+  }
 };
 
-const read_file_in_directory_and_do_math = async (req, res) => {
-  res.json(await fileModel.readFilesInDirectoryAndDoMath());
+const read_file_in_directory_and_do_math = async (req, res, next) => {
+  try {
+    res.json(await fileModel.readFilesInDirectoryAndDoMath());
+  } catch (error) {
+    next(error);
+  }
 };
 
+/*
 const read_month_data = async (req, res) => {
   res.json(await fileModel.readMonthData());
 };
+*/
 
-const calculate_month_data = async (req, res) => {
-  res.json(await fileModel.calculateMonthData());
+const calculate_month_data = async (req, res, next) => {
+  try {
+    res.json(await fileModel.calculateMonthData());
+  } catch (error) {
+    next(error);
+  }
 };
 
 const read_file = async (req, res, next) => {
@@ -46,7 +64,7 @@ const read_file_and_do_some_math = async (req, res, next) => {
 
 module.exports = {
   map_file_names_to_months,
-  read_month_data,
+  //read_month_data,
   read_file,
   read_file_and_do_some_math,
   read_file_in_directory_and_do_math,
