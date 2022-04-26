@@ -102,7 +102,6 @@ const readFilesInDirectoryAndDoMath = async () => {
         files.forEach(async (filename) => {
           oneAverage = await readFileAndDoSomeMath(filename);
           sum += oneAverage;
-          console.log('SUMmum: ', sum);
           var internalAverage = sum / files.length;
           console.log(
             'KESKIARVOTTELUA FOREACH: ',
@@ -116,10 +115,9 @@ const readFilesInDirectoryAndDoMath = async () => {
 
       averageCounter.then((sum) => {
         console.log('All done!');
-        //console.log('The SUMmum: ', sum);
-        console.log('SUMMMMMMMMAAA: ', sum);
+
         var average = sum / files.length;
-        console.log('KESKIARVOTTELUA: ', average);
+
         resolve(average);
       });
     });
@@ -166,7 +164,6 @@ const readFileAndDoSomeMath = (filename) => {
         console.log("File doesn't exist");
         reject("File doesn't exist");
       } else {
-        //console.log('File exists');
         // read file
         fs.readFile(directoryPath + '/' + filename, 'utf8', (err, data) => {
           // remove extra ":" from Movesense json
@@ -223,7 +220,6 @@ const readMonthData = async (month = 0) => {
           console.log('Month value: ', fileData);
 
           // access filedata
-          console.log('DATA: ', fileData.data);
         }
       }
     }
@@ -262,7 +258,7 @@ const calculateMonthData = async (month = 0) => {
     console.log('Loop all files');
     for (const monthKey in monthsWithFiles) {
       const monthValue = monthsWithFiles[monthKey];
-      console.log('MonthKey: ' + monthKey + ' VALUE: ' + monthValue);
+      //console.log('MonthKey: ' + monthKey + ' VALUE: ' + monthValue);
       var sum = 0.0;
       if (monthValue.length > 0) {
         for (let i = 0; i < monthValue.length; i++) {
@@ -273,10 +269,9 @@ const calculateMonthData = async (month = 0) => {
 
           //filesWithMonthsMath[monthKey].push(fileData);
 
-          console.log('Month value: math: ', sum);
+          //console.log('Month value: math: ', sum);
 
           // access filedata
-          console.log('DATA: ', fileData.data);
         }
         filesWithMonthsMath[monthKey].push(sum / monthValue.length);
       } else {
@@ -315,8 +310,8 @@ const getMostRecentAverage = () => {
       if (err) {
         reject(err);
       }
-
-      var recent = new Date();
+      var now = new Date();
+      var recent = null;
       var recentFilename = '';
 
       files.forEach(function (filename) {
@@ -354,11 +349,13 @@ const getMostRecentAverage = () => {
         if (recent == null) {
           recent = dateObject;
           recentFilename = filename;
+          //console.log('RECENT FILENAME 357: ', recentFilename);
         }
 
-        if (recent < dateObject) {
+        if (recent <= dateObject) {
           recent = dateObject;
           recentFilename = filename;
+          //console.log('RECENT FILENAME 362: ', recentFilename);
         }
 
         // use below to get local date and time format
@@ -382,7 +379,7 @@ const getMostRecentAverage = () => {
         });
         console.log('Files with months: ', filesWithMonths);
       });
-
+      console.log('RECENT FILENAME: ', recentFilename);
       resolve(readFileAndDoSomeMath(recentFilename));
     });
   });
