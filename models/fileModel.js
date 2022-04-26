@@ -3,6 +3,33 @@ const fs = require('fs');
 
 let directoryPath = path.join('./', 'uploads');
 
+// function that reads file that's name is given in parameter
+// file has to be in /uploads folder
+const readFile = (filename) => {
+  return new Promise((resolve, reject) => {
+    // check if file exists
+    fs.access(directoryPath + '/' + filename, (err) => {
+      if (err) {
+        console.log("File doesn't exist");
+        reject("File doesn't exist");
+      } else {
+        console.log('File exists');
+        // read file
+        fs.readFile(directoryPath + '/' + filename, 'utf8', (err, data) => {
+          // remove extra ":" from Movesense json
+          data = data.replace('data:', 'data');
+
+          if (err) {
+            console.error(err);
+            return err;
+          }
+          resolve(JSON.parse(data));
+        });
+      }
+    });
+  });
+};
+
 const mapFilenamesToMonths = () => {
   return new Promise((resolve, reject) => {
     const filenameArray = [];
@@ -133,37 +160,6 @@ const readFilesInDirectoryAndDoMath = async () => {
   });
 };
 
-//TODO Ei nyt mulla katos se ajatus päästä!!! --> Vittu voi voi!!!
-
-//TODO funktio joka käy läpi kaikki tiedostot uploads-kansiosta ja palauttaa tiedoston nimet
-
-// function that reads file that's name is given in parameter
-// file has to be in /uploads folder
-const readFile = (filename) => {
-  return new Promise((resolve, reject) => {
-    // check if file exists
-    fs.access(directoryPath + '/' + filename, (err) => {
-      if (err) {
-        console.log("File doesn't exist");
-        reject("File doesn't exist");
-      } else {
-        console.log('File exists');
-        // read file
-        fs.readFile(directoryPath + '/' + filename, 'utf8', (err, data) => {
-          // remove extra ":" from Movesense json
-          data = data.replace('data:', 'data');
-
-          if (err) {
-            console.error(err);
-            return err;
-          }
-          resolve(JSON.parse(data));
-        });
-      }
-    });
-  });
-};
-
 //counts average of a file
 const readFileAndDoSomeMath = (filename) => {
   return new Promise((resolve, reject) => {
@@ -204,42 +200,6 @@ const readFileAndDoSomeMath = (filename) => {
 
 //TODO funktio joka laskee kuukauden keskiarvon (ja jos aikaa on niin kaikki kuukauden datan)
 //TODO HUOM! X-CODESSA raja-arvot ja värit (punainen kun poikkeama suuri, ja vihreä kun poikeeama pieni)!!!
-
-/*
-const readMonthData = async (month = 0) => {
-  // read all files from directory
-  // month number is the key and key value is array of file names
-  const monthsWithFiles = await mapFilenamesToMonths();
-  console.log('MonthData ', monthsWithFiles);
-
-  // access specific month with
-  // monthsWithFiles[n] where n is number of the month
-  console.log('Prints April (Huhtikuu)', monthsWithFiles[4]);
-
-  if (month == 0) {
-    // loop trough all months and load corresponding files with readFile(filename) function
-    console.log('Loop all files');
-    for (const monthKey in monthsWithFiles) {
-      const monthValue = monthsWithFiles[monthKey];
-      console.log('MonthKey: ' + monthKey + ' VALUE: ' + monthValue);
-
-      if (monthValue.length > 0) {
-        for (let i = 0; i < monthValue.length; i++) {
-          // load each file
-          const fileData = await readFile(monthValue[i]);
-          console.log('Month value: ', fileData);
-
-          // access filedata
-        }
-      }
-    }
-  } else {
-    // get only specific month data and loadfile with
-    console.log('Month : ' + month + ' -> ', monthsWithFiles[month]);
-  }
-  return monthsWithFiles;
-};
-*/
 
 const calculateMonthData = async (month = 0) => {
   const filesWithMonthsMath = {
@@ -409,6 +369,42 @@ const getMostRecentAverage = () => {
     });
   });
 };
+
+/*
+const readMonthData = async (month = 0) => {
+  // read all files from directory
+  // month number is the key and key value is array of file names
+  const monthsWithFiles = await mapFilenamesToMonths();
+  console.log('MonthData ', monthsWithFiles);
+
+  // access specific month with
+  // monthsWithFiles[n] where n is number of the month
+  console.log('Prints April (Huhtikuu)', monthsWithFiles[4]);
+
+  if (month == 0) {
+    // loop trough all months and load corresponding files with readFile(filename) function
+    console.log('Loop all files');
+    for (const monthKey in monthsWithFiles) {
+      const monthValue = monthsWithFiles[monthKey];
+      console.log('MonthKey: ' + monthKey + ' VALUE: ' + monthValue);
+
+      if (monthValue.length > 0) {
+        for (let i = 0; i < monthValue.length; i++) {
+          // load each file
+          const fileData = await readFile(monthValue[i]);
+          console.log('Month value: ', fileData);
+
+          // access filedata
+        }
+      }
+    }
+  } else {
+    // get only specific month data and loadfile with
+    console.log('Month : ' + month + ' -> ', monthsWithFiles[month]);
+  }
+  return monthsWithFiles;
+};
+*/
 
 module.exports = {
   mapFilenamesToMonths,
