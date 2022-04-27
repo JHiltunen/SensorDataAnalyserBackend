@@ -123,7 +123,7 @@ const mapFilenamesToMonths = () => {
 const readFilesInDirectoryAndDoMath = async () => {
   return new Promise((resolve, reject) => {
     //passsing directoryPath and callback function
-    var sum = 0.0;
+    let sum = 0.0;
     fs.readdir(directoryPath, async function (err, files) {
       //handling error
       if (err) {
@@ -134,28 +134,15 @@ const readFilesInDirectoryAndDoMath = async () => {
         reject('No files!');
       }
 
-      var averageCounter = new Promise((resolve, reject) => {
-        files.forEach(async (filename) => {
-          oneAverage = await readFileAndDoSomeMath(filename);
-          sum += oneAverage;
-          var internalAverage = sum / files.length;
-          console.log(
-            'KESKIARVOTTELUA FOREACH: ',
-            internalAverage,
-            files.length,
-            files.indexOf(filename)
-          );
-          if (files.indexOf(filename) === files.length - 1) resolve(sum);
-        });
+      let averageCounter = Promise.all(
+        files.map(async (filename, index) => {
+          return await readFileAndDoSomeMath(filename);
+        })
+      );
+      (await averageCounter).forEach((oneAverage) => {
+        sum += oneAverage;
       });
-
-      averageCounter.then((sum) => {
-        console.log('All done!');
-
-        var average = sum / files.length;
-
-        resolve(average);
-      });
+      resolve(sum / files.length);
     });
   });
 };
@@ -237,17 +224,13 @@ const calculateMonthData = async (month = 0) => {
     for (const monthKey in monthsWithFiles) {
       const monthValue = monthsWithFiles[monthKey];
       //console.log('MonthKey: ' + monthKey + ' VALUE: ' + monthValue);
-      var sum = 0.0;
+      let sum = 0.0;
       if (monthValue.length > 0) {
         for (let i = 0; i < monthValue.length; i++) {
           // load each file
           const fileData = await readFileAndDoSomeMath(monthValue[i]);
 
           sum += fileData;
-
-          //filesWithMonthsMath[monthKey].push(fileData);
-
-          //console.log('Month value: math: ', sum);
 
           // access filedata
         }
