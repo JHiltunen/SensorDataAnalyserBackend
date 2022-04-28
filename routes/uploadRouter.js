@@ -10,7 +10,15 @@ let storage = multer.diskStorage({
   },
 });
 
-let upload = multer({ storage: storage });
+let upload = multer({ storage: storage, 
+  fileFilter(req, file, cb) {
+  if (!file.originalname.match(/\.(json)$/)) { 
+     // upload only json format
+     return cb(new Error('Please upload a json file'))
+   }
+    cb(undefined, true)
+  },}
+);
 
 router
   .route('/')
