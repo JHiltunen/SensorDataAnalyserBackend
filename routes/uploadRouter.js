@@ -22,6 +22,6 @@ let upload = multer({ storage: storage,
 
 router
   .route('/')
-  .post(upload.single('file'), uploadController.upload_json_file);
+  .post(upload.array('files'), uploadController.upload_json_file);
 
 module.exports = router;
