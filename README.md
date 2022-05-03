@@ -50,10 +50,10 @@ For development, you will only need Node.js and Node.js package manager, install
 If the installation was successful, you should be able to run the following command.
 
     $ node --version
-    v16.14.0
+    v16.15.0
 
     $ npm --version
-    8.3.1
+    8.5.5
 
 ---
 
